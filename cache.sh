@@ -63,7 +63,7 @@ check_cache_status() {
     elif echo "$response" | grep -q "cf-cache-status: EXPIRED"; then
         echo -e "${YELLOW}La caché de la URL $URL ha expirado.${NC}"
     elif echo "$response" | grep -q "cf-cache-status: DYNAMIC"; then
-        echo -e "${RED}La URL $URL es dinámica.${NC}"
+        echo -e "${YELLOW}La URL $URL es dinámica.${NC}"
     elif echo "$response" | grep -q "cf-cache-status: REVALIDATED"; then
         echo -e "${YELLOW}La URL $URL tiene revalidación de caché.${NC}"
     else
