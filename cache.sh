@@ -6,6 +6,10 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # Sin color
 
+# Control de concurrencia
+MAX_CONCURRENT=10
+current_jobs=0
+
 # Función para normalizar URLs evitando dobles barras //
 normalize_url() {
     local url=$1
@@ -21,6 +25,11 @@ explore_directory() {
         # Normalizar la ruta para evitar barras adicionales
         full_url=$(normalize_url "${base_url%/}/$url")
         if [[ $url == */ ]]; then
+            ((current_jobs++))
+            if ((current_jobs >= MAX_CONCURRENT)); then
+                wait -n
+                ((current_jobs--))
+            fi
             explore_directory "$full_url" &
         else
             check_cache_status "$full_url"
@@ -43,8 +52,8 @@ check_cache_status() {
     fi
 
     # Mostrar los encabezados completos (opcional, para depuración)
-    echo -e "${YELLOW}Encabezados para $URL:${NC}"
-    echo "$response"
+    # echo -e "${YELLOW}Encabezados para $URL:${NC}"
+    # echo "$response"
 
     # Analizar los encabezados para determinar el estado del caché
     if echo "$response" | grep -q "cf-cache-status: HIT"; then
