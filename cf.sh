@@ -43,7 +43,7 @@ explore_directory() {
 }
 
 # URL base
-base_url=https://debian.com.ar/debian/project/
+base_url=https://debian.com.ar/debian/pool/
 
 #if [[ -z $base_url ]]; then
 #    echo "Uso: $0 <URL>"
